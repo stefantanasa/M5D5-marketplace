@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { Col, Container, Form, Row } from "react-bootstrap"
 import { useParams } from "react-router-dom"
+import StarRatings from "react-star-ratings"
+import Review from "./Review"
 
 export default function ProductDetails() {
   const { productId } = useParams()
@@ -12,11 +14,13 @@ export default function ProductDetails() {
   const [reviewsLoading, setReviewsLoading] = useState(false)
   const [reviewsError, setReviewsError] = useState(false)
 
+  const [rating, setRating] = useState(0)
+
   const getProduct = async () => {
     setLoading(true)
     try {
       const response = await fetch(
-        `http://localhost:3001/${productId}/reviews`,
+        `http://localhost:3001/products/${productId}`,
         {
           method: "GET",
         }
@@ -40,7 +44,7 @@ export default function ProductDetails() {
     setReviewsLoading(true)
     try {
       const response = await fetch(
-        `http://localhost:3001/reviews/${productId}`,
+        `http://localhost:3001/products/${productId}/reviews`,
         {
           method: "GET",
         }
@@ -85,7 +89,17 @@ export default function ProductDetails() {
 
         <Row className="mt-3 text-left">
           <Col md={6}>
-            <h4>Reviews</h4>
+            <h4 className="mb-3">Write a Review</h4>
+            <StarRatings
+              numberOfStars={5}
+              rating={rating}
+              changeRating={setRating}
+              starDimension="25px"
+              starSpacing="5px"
+              starHoverColor="#ffd700"
+              starRatedColor="#ffd700"
+              starEmptyColor="grey"
+            />
             <Form className="mt-3">
               <Form.Group
                 className="mb-3"
@@ -97,48 +111,17 @@ export default function ProductDetails() {
                   placeholder="Write your comments..."
                 />
               </Form.Group>
-              {
-                <div className="mb-3">
-                  <Form.Check
-                    inline
-                    label="1"
-                    name="rating"
-                    type="radio"
-                    id={`rating-1`}
-                  />
-                  <Form.Check
-                    inline
-                    label="2"
-                    name="rating"
-                    type="radio"
-                    id={`rating-2`}
-                  />
-                  <Form.Check
-                    inline
-                    label="3"
-                    name="rating"
-                    type="radio"
-                    id={`rating-3`}
-                  />
-                  <Form.Check
-                    inline
-                    label="4"
-                    name="rating"
-                    type="radio"
-                    id={`rating-4`}
-                  />
-                  <Form.Check
-                    inline
-                    label="5"
-                    name="rating"
-                    type="radio"
-                    id={`rating-5`}
-                  />
-                </div>
-              }
             </Form>
           </Col>
         </Row>
+        {!reviewsLoading && !reviewsError && reviews && (
+          <div className="mt-3">
+            <h5>Reviews</h5>
+            {reviews.map((review) => (
+              <Review key={review._id} review={review} />
+            ))}
+          </div>
+        )}
       </Container>
     </div>
   )
