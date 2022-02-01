@@ -16,11 +16,12 @@ export default function ProductDetails() {
 
   const [rating, setRating] = useState(0)
 
+  const apiUrl = process.env.REACT_API_FE_URL 
   const getProduct = async () => {
     setLoading(true)
     try {
       const response = await fetch(
-        `https://homework-m5d7.herokuapp.com/products/${productId}`,
+        `${apiUrl} ${productId}`,
         {
           method: "GET",
         }
@@ -44,7 +45,7 @@ export default function ProductDetails() {
     setReviewsLoading(true)
     try {
       const response = await fetch(
-        `https://homework-m5d7.herokuapp.com/products/${productId}/reviews`,
+        `${apiUrl} ${productId}/reviews`,
         {
           method: "GET",
         }
