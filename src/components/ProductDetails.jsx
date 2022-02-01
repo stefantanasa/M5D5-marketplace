@@ -20,7 +20,7 @@ export default function ProductDetails() {
     setLoading(true)
     try {
       const response = await fetch(
-        `http://localhost:3001/products/${productId}`,
+        `https://homework-m5d7.herokuapp.com/products/${productId}`,
         {
           method: "GET",
         }
@@ -44,7 +44,7 @@ export default function ProductDetails() {
     setReviewsLoading(true)
     try {
       const response = await fetch(
-        `http://localhost:3001/products/${productId}/reviews`,
+        `https://homework-m5d7.herokuapp.com/products/${productId}/reviews`,
         {
           method: "GET",
         }
